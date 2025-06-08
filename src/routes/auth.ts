@@ -7,7 +7,8 @@ const router = express.Router();
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const REDIRECT_URI = 'http://localhost:3333/api/auth/google/callback';
+const REDIRECT_URI = `${process.env.REDIRECT_URI!}/api/auth/google/callback`;
+const FRONT_END_URL= process.env.FRONT_END_URL!;
 
 router.get('/tokens', async (req: Request, res: any) => {
   const { toolId, userId } = req.query;
@@ -111,7 +112,7 @@ router.get('/google/callback', async (req: Request, res: any) => {
     }
 
     // Redirect with success message (you can modify this based on your frontend needs)
-    return res.redirect(`http://localhost:3000/dashboard?auth=success&tool=${toolId}&message=${encodeURIComponent(successMessage)}`);
+    return res.redirect(`${FRONT_END_URL}/dashboard?auth=success&tool=${toolId}&message=${encodeURIComponent(successMessage)}`);
 
   } catch (err) {
     console.error('OAuth callback error:', err);
@@ -123,7 +124,7 @@ router.get('/google/callback', async (req: Request, res: any) => {
       errorMessage = `OAuth failed: ${err.response.data.error_description || err.response.data.error || 'Unknown error'}`;
     }
     
-    return res.redirect(`http://localhost:3000/dashboard?auth=error&message=${encodeURIComponent(errorMessage)}`);
+    return res.redirect(`${FRONT_END_URL}/dashboard?auth=error&message=${encodeURIComponent(errorMessage)}`);
   }
 });
 
