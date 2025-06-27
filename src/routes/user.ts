@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/createOrUpdate', async (req:Request, res:any) => {
   const { email, name } = req.body;
-
+ console.log(req.body)
   if (!email) return res.status(400).json({ error: 'Missing email' });
 
   try {
